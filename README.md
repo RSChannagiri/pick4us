@@ -1,56 +1,46 @@
-# Welcome to your Expo app 👋
+# Pick4Us
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Pick4Us picks one restaurant a whole group can agree on.
 
-## Get started
+One person starts a group and shares a 4-letter code. Everyone joins on their phone and taps what they are craving, what they can't eat (vegetarian, vegan, halal) and their budget. Pick4Us removes every place that breaks someone's limits or budget, ranks the rest by how many people are craving them, and shows one pick, a backup and the reason. Screens update live as people respond.
 
-1. Install dependencies
+## Why
 
-   ```bash
-   npm install
-   ```
+While doing customer discovery for Kalisi, I interviewed 20+ people who find food on social media. Food preferences turned out to be a bigger pain point than expected, especially in groups. Pick4Us is a small attempt at solving that.
 
-2. Start the app
+<img src="docs/screenshot.png" width="320" alt="Pick4Us group screen">
 
-   ```bash
-   npx expo start
-   ```
+## How it works
 
-In the output, you'll find options to open the app in a
+- **Expo** (React Native) for the app, in `src/app`
+- **Convex** for the backend, in `convex/`. `getPick` is a query, so when someone submits, every phone in the group gets the new pick by itself.
+- No accounts. You are identified by name inside a group, and submitting again replaces your answer.
+- The pick logic is in `convex/pickLogic.ts`, with tests in `tests/pick.test.ts`.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The restaurant list is about 15 real places near Santa Clara University, in `restaurants.jsonl`. Dietary tags reflect menus, not allergy safety.
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Run it
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+```bash
+npx convex dev
+```
 
-### Other setup steps
+The first time, this asks you to log in to Convex and creates a deployment. Then load the restaurants:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npx convex import --table restaurants restaurants.jsonl
+```
 
-## Learn more
+In a second terminal:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Scan the QR code with Expo Go, or press `w` for the web version. Run the pick tests with `npx tsx tests/pick.test.ts`.
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Built with help from an AI coding agent.
