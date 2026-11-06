@@ -1,6 +1,6 @@
 # Pick4Us
 
-Pick4Us picks one restaurant a whole group can agree on.
+Pick4Us picks one restaurant a whole group can agree on. Site: https://pick4us.vercel.app
 
 One person starts a group and shares a 4-letter code. Everyone joins on their phone and taps what they are craving, what they can't eat (vegetarian, vegan, halal) and their budget. Pick4Us removes every place that breaks someone's limits or budget, ranks the rest by how many people are craving them, and shows one pick, a backup and the reason. Screens update live as people respond.
 
