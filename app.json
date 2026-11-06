@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "food-picker",
-    "slug": "food-picker",
+    "name": "Pick4Us",
+    "slug": "pick4us",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "foodpicker",
+    "scheme": "pick4us",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
@@ -20,7 +20,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "server",
+      "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
