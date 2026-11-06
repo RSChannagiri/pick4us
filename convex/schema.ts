@@ -18,4 +18,7 @@ export default defineSchema({
     limits: v.array(v.string()),
     budget: v.number(),
   }).index("by_group", ["groupId"]),
+  waitlist: defineTable({
+    email: v.string(),
+  }).index("by_email", ["email"]),
 });
