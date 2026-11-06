@@ -45,3 +45,8 @@ example
 
 # macOS resource forks
 ._*
+
+# local tooling
+.claude/
+AGENTS.md
+CLAUDE.md
