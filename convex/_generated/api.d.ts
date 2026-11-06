@@ -12,6 +12,8 @@ import type * as groups from "../groups.js";
 import type * as pick from "../pick.js";
 import type * as pickLogic from "../pickLogic.js";
 import type * as responses from "../responses.js";
+import type * as waitlist from "../waitlist.js";
+import type * as waitlistAdmin from "../waitlistAdmin.js";
 
 import type {
   ApiFromModules,
@@ -24,6 +26,8 @@ declare const fullApi: ApiFromModules<{
   pick: typeof pick;
   pickLogic: typeof pickLogic;
   responses: typeof responses;
+  waitlist: typeof waitlist;
+  waitlistAdmin: typeof waitlistAdmin;
 }>;
 
 /**
