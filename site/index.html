@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pick4Us · Your group picks a place to eat in a minute</title>
+<meta name="description" content="Share a code, everyone taps their cravings and limits, and you get one restaurant that works for the whole group.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#top">pick4us<span class="dot">.</span></a>
+  <nav>
+    <a class="hide-sm" href="#how">How it works</a>
+    <a class="btn btn-sm" href="#waitlist">Join waitlist</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">For groups near Santa Clara University</p>
+      <h1>Your group picks a place to eat in a minute.</h1>
+      <p class="lede">Share a code. Everyone taps what they're craving, what they can't eat, and what they want to spend. You get one place that works for all of you, plus a backup.</p>
+      <div class="ctas">
+        <a class="btn" href="#waitlist">Join the waitlist</a>
+        <a class="btn btn-ghost" href="https://github.com/RSChannagiri/pick4us" target="_blank" rel="noopener">View the code</a>
+      </div>
+    </div>
+
+    <figure class="shot">
+      <img src="pick.png" width="390" height="844" alt="Pick4Us group screen showing the pick, the group code and everyone's choices">
+    </figure>
+  </section>
+
+  <section class="how" id="how">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li>
+        <span class="num">1</span>
+        <h3>Share a code</h3>
+        <p>One person starts a group and gets a 4-letter code. Friends join on their own phones. No accounts.</p>
+      </li>
+      <li>
+        <span class="num">2</span>
+        <h3>Everyone taps in</h3>
+        <p>Cravings, limits like vegetarian or halal, and a budget from $ to $$$. Screens update live as friends answer.</p>
+      </li>
+      <li>
+        <span class="num">3</span>
+        <h3>Get one pick</h3>
+        <p>Places that break anyone's limit or budget are dropped. The rest are ranked by how many people want them.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="example" aria-label="Example result">
+    <div class="result">
+      <p class="label">Example result</p>
+      <div class="pick">
+        <div>
+          <p class="tag">The pick</p>
+          <p class="place">Puesto</p>
+        </div>
+        <span class="price">$$</span>
+      </div>
+      <p class="reason">"Fits everyone's limits, and 3 of 4 people are craving mexican."</p>
+      <div class="chips">
+        <span>mexican ×3</span><span>thai ×1</span><span>vegetarian</span>
+      </div>
+      <p class="backup">Backup: Zona Rosa</p>
+    </div>
+    <div class="rules">
+      <h2>It never breaks a limit.</h2>
+      <p>If no place fits everyone, it says so instead of guessing. Ties go to the cheaper place, so the answer is the same every time.</p>
+      <p class="fine">Dietary filters are a convenience, not an allergy check. Always confirm with the restaurant.</p>
+    </div>
+  </section>
+
+  <section class="why">
+    <p class="eyebrow">Why it exists</p>
+    <blockquote>In 20+ customer interviews for Kalisi, food preferences turned out to be a bigger pain point than we expected. Pick4Us is the smallest thing that fixes it.</blockquote>
+  </section>
+
+  <section class="waitlist" id="waitlist">
+    <h2>Want it for your group?</h2>
+    <p class="lede">Join the waitlist and we'll let you know when Pick4Us is ready to download.</p>
+    <form class="wl-form" id="wl-form" novalidate>
+      <label class="sr-only" for="wl-email">Email</label>
+      <input id="wl-email" type="email" name="email" placeholder="you@email.com" autocomplete="email" required>
+      <button class="btn" type="submit">Join the waitlist</button>
+    </form>
+    <p class="wl-msg" id="wl-msg" role="status" aria-live="polite"></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div>
+    <a class="brand" href="#top">pick4us<span class="dot">.</span></a>
+  </div>
+  <nav>
+    <a href="https://github.com/RSChannagiri/pick4us" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/rachanachannagiri" target="_blank" rel="noopener">Rachana on LinkedIn</a>
+  </nav>
+</footer>
+
+<script>
+  const form = document.getElementById("wl-form");
+  const msg = document.getElementById("wl-msg");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.textContent = "That email doesn't look right.";
+      msg.dataset.state = "error";
+      return;
+    }
+    const btn = form.querySelector("button");
+    btn.disabled = true;
+    btn.textContent = "Joining…";
+    try {
+      const res = await fetch("https://calm-meerkat-521.convex.cloud/api/mutation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "waitlist:join", args: { email }, format: "json" }),
+      });
+      const data = await res.json();
+      if (data.status !== "success") throw new Error();
+      form.hidden = true;
+      msg.textContent = "You're on the list. We'll be in touch.";
+      msg.dataset.state = "success";
+    } catch {
+      msg.textContent = "Something went wrong. Try again?";
+      msg.dataset.state = "error";
+      btn.disabled = false;
+      btn.textContent = "Join the waitlist";
+    }
+  });
+</script>
+</body>
+</html>
